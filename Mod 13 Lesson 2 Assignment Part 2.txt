@@ -1,0 +1,35 @@
+Task 1:
+
+select e.name, sum(p.quantity_produced) as total_quantity_produced
+from employees e
+join production p on e.id = p.employee_id
+group by e.name;
+
+
+Task 2:
+
+select p.name, sum(o.quantity) as total_quantity_ordered
+from products p
+join orders o on p.id = o.product_id
+group by p.name;
+
+
+Task 3:
+
+select c.name, sum(o.total_price) as total_cost
+from customers c 
+join orders o on c.id = o.customer_id
+group by c.name
+having sum(o.total_price) > 1000;
+
+
+Task 4:
+
+select p.name, sum(pr.quantity_produced) as produced_by_date
+from products p
+join production pr on p.id = pr.product_id
+where '2024-03-04' in  (
+	select pr.date_produced
+    from production)
+group by p.name;
+
