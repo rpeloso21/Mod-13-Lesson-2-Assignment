@@ -20,3 +20,7 @@ def save():
 def find_all():
     employees = employeeService.find_all()
     return employees_schema.jsonify(employees), 200
+
+def employee_performance():
+    result = employeeService.employee_performance()
+    return result, 200

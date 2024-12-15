@@ -1,6 +1,8 @@
+from flask import jsonify
 from sqlalchemy.orm import Session
 from database import db
 from models.employee import Employee
+from models.production import Production
 from circuitbreaker import circuit
 from sqlalchemy import select
 
@@ -30,3 +32,16 @@ def find_all():
     query = select(Employee)
     employees = db.session.execute(query).scalars().all()
     return employees
+
+def employee_performance():
+    # Perform the SQL query using SQLAlchemy
+    result = db.session.query(
+        Employee.name,
+        db.func.sum(Production.quantity_produced).label('total_quantity_produced')
+    ).join(Production, Production.employee_id == Employee.id).group_by(Employee.name).all()
+
+    # Format the result as a list of dictionaries
+    employee_totals = [{'name': row.name, 'total_quantity_produced': row.total_quantity_produced} for row in result]
+
+    # Return the result as JSON
+    return jsonify(employee_totals)

@@ -20,3 +20,7 @@ def save():
 def find_all():
     customers = customerService.find_all()
     return customers_schema.jsonify(customers), 200
+
+def customer_value():
+    result = customerService.customer_value()
+    return result, 200
